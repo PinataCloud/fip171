@@ -2,6 +2,7 @@
 import React, { useEffect, useState } from 'react'
 import IPFSGatewayTools from "@pinata/ipfs-gateway-tools/dist/node";
 import showdown from "showdown"
+import Loader from './Loader';
 
 const converter = new showdown.Converter()
 const gatewayTools = new IPFSGatewayTools();
@@ -19,6 +20,7 @@ export interface CastResponse {
 
 export type CastProps = {
   data: CastResponse
+  loading: boolean
 }
 
 export interface Schema {
@@ -28,7 +30,7 @@ export interface Schema {
   }
   version: string;
 }
-const LongCastExpand = ({ data }: CastProps) => {
+const LongCastExpand = ({ data, loading }: CastProps) => {
   const [casts, setCasts] = useState<any[]>([])
   const [expandedCast, setExpandedCast] = useState("")
   useEffect(() => {
@@ -65,37 +67,40 @@ const LongCastExpand = ({ data }: CastProps) => {
   return (
     <div>
       {
-        casts && casts.length &&
-        casts.map((c: any) => {
-          return (
-            <div className="w-full border border-gray-700 p-4" key={c.hash}>
-              <div className="flex items-center">
-                <img src={c.author.pfp_url} alt={c.author.display_name} className="h-12 w-12 rounded-full" />
-                <div className="ml-2">
-                  <h3 className="text-xl">{c.author.display_name}</h3>
-                  <p className="text-md text-gray-500">@{c.author.username}</p>
-                </div>
-              </div>
-              <div className="prose lg:prose-xl">
-                {c.longText && expandedCast === c.hash ?
-                  <div>
-                    <div
-                      dangerouslySetInnerHTML={{ __html: c.longText }}
-                    />
-                    <button onClick={() => setExpandedCast("")}>See less</button>
+        loading ?
+          <Loader />
+          :
+          casts && casts.length &&
+          casts.map((c: any) => {
+            return (
+              <div className="w-full border border-gray-700 p-4" key={c.hash}>
+                <div className="flex items-center">
+                  <img src={c.author.pfp_url} alt={c.author.display_name} className="h-12 w-12 rounded-full" />
+                  <div className="ml-2">
+                    <h3 className="text-xl">{c.author.display_name}</h3>
+                    <p className="text-md text-gray-500">@{c.author.username}</p>
                   </div>
-                  : c.longText ?
+                </div>
+                <div className="prose lg:prose-xl">
+                  {c.longText && expandedCast === c.hash ?
                     <div>
                       <div
-                        dangerouslySetInnerHTML={{ __html: c.longText.substring(0, 200) }}
+                        dangerouslySetInnerHTML={{ __html: c.longText }}
                       />
-                      <button onClick={() => setExpandedCast(c.hash)}>See more</button>
+                      <button onClick={() => setExpandedCast("")}>See less</button>
                     </div>
-                    : c.text}
+                    : c.longText ?
+                      <div>
+                        <div
+                          dangerouslySetInnerHTML={{ __html: c.longText.substring(0, 200) }}
+                        />
+                        <button onClick={() => setExpandedCast(c.hash)}>See more</button>
+                      </div>
+                      : c.text}
+                </div>
               </div>
-            </div>
-          )
-        })
+            )
+          })
       }
     </div>
   )

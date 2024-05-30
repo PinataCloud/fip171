@@ -1,8 +1,9 @@
 'use client'
 import React from 'react'
 import { CastProps } from './LongCastExpand'
+import Loader from './Loader'
 
-const StandardCast = ({ data }: CastProps) => {
+const StandardCast = ({ data, loading }: CastProps) => {
   const Embeds = ({ cast }: { cast: any }) => {
     if (cast.embeds && cast.embeds.length > 0) {
       return cast.embeds.map((e: any) => {
@@ -21,6 +22,8 @@ const StandardCast = ({ data }: CastProps) => {
   return (
     <div>
       {
+        loading ? 
+        <Loader /> :
         data.casts && data.casts.length &&
         data.casts.map((c: any) => {
           return (

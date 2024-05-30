@@ -2,10 +2,11 @@
 import React from 'react'
 import { CastProps, Schema } from './LongCastExpand'
 import IPFSGatewayTools from "@pinata/ipfs-gateway-tools/dist/node";
+import Loader from './Loader';
 
 const gatewayTools = new IPFSGatewayTools();
 
-const LongcastLink = ({ data }: CastProps) => {
+const LongcastLink = ({ data, loading }: CastProps) => {
   const parseUri = (uri: string) => {
     const { cid } = gatewayTools.containsCID(uri)
     if (cid) {
@@ -34,6 +35,8 @@ const LongcastLink = ({ data }: CastProps) => {
   return (
     <div>
       {
+        loading ? 
+        <Loader /> :
         data.casts && data.casts.length &&
         data.casts.map((c: any) => {
           return (

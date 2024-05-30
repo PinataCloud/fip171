@@ -4,10 +4,10 @@ import Container from "./components/container";
 
 function Home() {
   const [data, setData] = useState<any>([])
+  const [loading, setLoading] = useState(true)
   useEffect(() => {
     const getCasts = async () => {
-      const res = await fetchData()
-      setData(res)
+      await fetchData()      
     }
     getCasts()
   }, []);
@@ -20,7 +20,8 @@ function Home() {
   
       const data = await res.json();
       // console.log(data)
-      return data;
+      setData(data)
+      setLoading(false)
     } catch (error) {
       console.log(error);
       return error;
@@ -28,7 +29,7 @@ function Home() {
   }
   return (
     <div className="bg-white min-h-screen text-black">
-      <Container data={data} fetchCasts={fetchData} />
+      <Container loading={loading} data={data} fetchCasts={fetchData} />
     </div>
   );
 }

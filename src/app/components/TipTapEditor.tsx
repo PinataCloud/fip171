@@ -9,8 +9,10 @@ const turndownService = new TurndownService()
 interface EditorProps {
   castMessage: Function;
   setOpen: Function;
+  sendingCast: boolean;
+  setSendingCast: Function;
 }
-const TipTapEditor = ({ castMessage, setOpen }: EditorProps) => {
+const TipTapEditor = ({ castMessage, setOpen, setSendingCast, sendingCast }: EditorProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -19,6 +21,7 @@ const TipTapEditor = ({ castMessage, setOpen }: EditorProps) => {
   })
 
   const handleSubmit = async () => {
+    setSendingCast(true);
     const html = editor?.getHTML()    
     const markdown = turndownService.turndown(html || "")
     const text = editor?.getText()    
@@ -32,10 +35,11 @@ const TipTapEditor = ({ castMessage, setOpen }: EditorProps) => {
       <div className="mt-5 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-3">
         <button
           type="button"
+          disabled={sendingCast}
           className="inline-flex w-full justify-center rounded-md bg-primary px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 sm:col-start-2"
           onClick={() => handleSubmit()}
         >
-          Cast
+          {sendingCast ? "Casting..." : "Cast"}
         </button>
         <button
           type="button"

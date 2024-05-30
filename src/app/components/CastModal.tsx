@@ -21,6 +21,7 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
   const [fcLinked, setLinked] = useState(false);
   const [content, setContent] = useState("<p></p>")
   const [needToSignIn, setNeedToSignIn] = useState(false);
+  const [sendingCast, setSendingCast] = useState(false);
 
   const { user, login, getAccessToken } = usePrivy()
   const { requestFarcasterSignerFromWarpcast, signFarcasterMessage, getFarcasterSignerPublicKey } = useExperimentalFarcasterSigner();
@@ -93,9 +94,11 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
       console.log(submitCastResponse)
       setContent("")
       setOpen(false);
-      fetchCasts()
+      setSendingCast(false);
+      await fetchCasts()
     } catch (error) {
       console.log(error)
+      setSendingCast(false);
       alert("Trouble sending cast")
     }
   }
@@ -148,7 +151,7 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
         <div>
           <div className="mt-3 text-center sm:mt-5">
             <div className="mt-2 text-black text-left">
-              <TipTapEditor setOpen={setOpen} castMessage={castMessage} />
+              <TipTapEditor sendingCast={sendingCast} setSendingCast={setSendingCast} setOpen={setOpen} castMessage={castMessage} />
             </div>
           </div>
         </div>

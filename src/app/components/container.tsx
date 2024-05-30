@@ -11,9 +11,10 @@ import LongcastLink from "./LongcastLink";
 interface ContainerProps {
   data: any;
   fetchCasts: Function;
+  loading: boolean;
 }
 
-export default function Container({ data, fetchCasts }: ContainerProps) {
+export default function Container({ data, fetchCasts, loading }: ContainerProps) {
   const [open, setOpen] = useState(false);
   return (
     <PrivyProvider
@@ -38,20 +39,20 @@ export default function Container({ data, fetchCasts }: ContainerProps) {
         <div className="mx-auto w-full max-w-7xl grow lg:flex xl:px-2">
           {/* Left sidebar & main wrapper */}
           <div className="flex-1 xl:flex">
-            <div className="h-1/2 xl:h-screen border-b border-gray-200 px-4 py-6 sm:px-6 lg:pl-8 xl:w-64 xl:shrink-0 xl:border-b-0 xl:border-r xl:pl-6">
+            <div className="max-h-[50vh] overflow-scroll xl:max-h-screen border-b border-gray-200 px-4 py-6 sm:px-6 lg:pl-8 xl:w-64 xl:shrink-0 xl:border-b-0 xl:border-r xl:pl-6">
               <h1 className="text-center mb-8 text-xl">Link to long cast</h1>
-              <LongcastLink data={data} />
+              <LongcastLink loading={loading} data={data} />
             </div>
 
-            <div className="h-1/2 xl:h-screen px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
+            <div className="max-h-[50vh] overflow-scroll xl:max-h-screen px-4 py-6 sm:px-6 lg:pl-8 xl:flex-1 xl:pl-6">
               <h1 className="text-center mb-8 text-xl">Native long cast support</h1>
-              <LongCastExpand data={data} />
+              <LongCastExpand loading={loading} data={data} />
             </div>
           </div>
 
-          <div className="h-1/2 md:h-screen shrink-0 border-t border-gray-200 px-4 py-6 sm:px-6 lg:w-96 lg:border-l lg:border-t-0 lg:pr-8 xl:pr-6">
+          <div className="max-h-[50vh] overflow-scroll md:max-h-screen shrink-0 border-t border-gray-200 px-4 py-6 sm:px-6 lg:w-96 lg:border-l lg:border-t-0 lg:pr-8 xl:pr-6">
             <h1 className="text-center mb-8 text-xl">Standard cast</h1>
-            <StandardCast data={data} />
+            <StandardCast loading={loading} data={data} />
           </div>
         </div>
         <button
