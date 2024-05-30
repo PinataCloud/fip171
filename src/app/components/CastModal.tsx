@@ -67,7 +67,7 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
         }
       }
 
-      const res = await fetch(`http://localhost:3000/api/upload`, {
+      const res = await fetch(`/api/upload`, {
         method: "POST",
         headers: {
           'Authorization': `Bearer ${accessToken}`,
