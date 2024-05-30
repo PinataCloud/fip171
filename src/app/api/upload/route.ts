@@ -1,12 +1,18 @@
 import type { NextRequest } from 'next/server'
 import { getRequestContext } from '@cloudflare/next-on-pages'
+import { verifySession } from '@/app/utils'
 
 export const runtime = 'edge'
 export const dynamic = 'force-dynamic'
 
 export async function POST(request: NextRequest) {
   try {
-    //  TODO validate request from privy token here
+    const authToken = request?.headers?.get('authorization')?.replace('Bearer ', '') || ""
+
+    const verified = await verifySession(authToken);
+    if (!verified) {
+      return new Response("Unauthorized", { status: 401 })
+    }
     const jwt = process.env.PINATA_JWT
 
     const payload = await request.json()

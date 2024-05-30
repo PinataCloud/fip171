@@ -22,7 +22,7 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
   const [content, setContent] = useState("<p></p>")
   const [needToSignIn, setNeedToSignIn] = useState(false);
 
-  const { user, login } = usePrivy()
+  const { user, login, getAccessToken } = usePrivy()
   const { requestFarcasterSignerFromWarpcast, signFarcasterMessage, getFarcasterSignerPublicKey } = useExperimentalFarcasterSigner();
   const editor = useCurrentEditor()
 
@@ -53,7 +53,7 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
 
   const castMessage = async (text: string, markdown: string) => {
     try {
-
+      const accessToken = await getAccessToken();
       const privySigner = new ExternalEd25519Signer(signFarcasterMessage, getFarcasterSignerPublicKey);
       const prunedText = text && text.length > 200 ? text.substring(0, 200) + "..." : text ? text : ""
       const fid = user?.farcaster?.fid || 0;
@@ -69,26 +69,27 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
       const res = await fetch(`http://localhost:3000/api/upload`, {
         method: "POST",
         headers: {
+          'Authorization': `Bearer ${accessToken}`,
           'Content-Type': 'application/json'
         },
         body: JSON.stringify(json)
       })
 
-      const data: any = await res.json()
-      const submitCastResponse = await client.submitCast(
-        {
-          text: prunedText,
-          embeds: [
-            {
-              url: `fc+ipfs://${data.IpfsHash}`
-            }
-          ],
-          parentUrl: 'https://warpcast.com/~/channel/fipworks'
-        },
-        fid,
-        privySigner,
-      );
-      console.log(submitCastResponse)
+      // const data: any = await res.json()
+      // const submitCastResponse = await client.submitCast(
+      //   {
+      //     text: prunedText,
+      //     embeds: [
+      //       {
+      //         url: `fc+ipfs://${data.IpfsHash}`
+      //       }
+      //     ],
+      //     parentUrl: 'https://warpcast.com/~/channel/fipworks'
+      //   },
+      //   fid,
+      //   privySigner,
+      // );
+      // console.log(submitCastResponse)
       setContent("")
       setOpen(false);
       fetchCasts()
