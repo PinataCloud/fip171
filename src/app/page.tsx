@@ -13,7 +13,7 @@ function Home() {
   }, []);
  
   async function fetchData() {
-    try {
+    try {   
       const res = await fetch(
         `/api/casts`      
       );

@@ -53,6 +53,14 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
   //   localStorage.setItem("cast-text", content)
   // }, [content])
 
+  const wait = async (time: number) => {
+    return new Promise((resolve: any) => {
+      setTimeout(() => {
+        resolve()
+      }, time)
+    })
+  }
+
   const castMessage = async (text: string, markdown: string) => {
     try {
       const accessToken = await getAccessToken();
@@ -95,6 +103,7 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
       setContent("")
       setOpen(false);
       setSendingCast(false);
+      await wait(3000)
       await fetchCasts()
     } catch (error) {
       console.log(error)

@@ -16,6 +16,7 @@ interface ContainerProps {
 
 export default function Container({ data, fetchCasts, loading }: ContainerProps) {
   const [open, setOpen] = useState(false);
+  console.log(data)
   return (
     <PrivyProvider
       appId="clwqrzmdf04wers4y8zmfo0yq"

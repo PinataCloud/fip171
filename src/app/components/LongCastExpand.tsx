@@ -81,20 +81,21 @@ const LongCastExpand = ({ data, loading }: CastProps) => {
                     <p className="text-md text-gray-500">@{c.author.username}</p>
                   </div>
                 </div>
-                <div className="prose lg:prose-xl">
+                <div className="prose lg:prose-lg">
                   {c.longText && expandedCast === c.hash ?
                     <div>
+                      <button className="underline mt-2" onClick={() => setExpandedCast("")}>See less</button>
                       <div
                         dangerouslySetInnerHTML={{ __html: c.longText }}
                       />
-                      <button onClick={() => setExpandedCast("")}>See less</button>
+                      <button className="underline" onClick={() => setExpandedCast("")}>See less</button>
                     </div>
                     : c.longText ?
                       <div>
                         <div
                           dangerouslySetInnerHTML={{ __html: c.longText.substring(0, 200) }}
                         />
-                        <button onClick={() => setExpandedCast(c.hash)}>See more</button>
+                        <button className="underline" onClick={() => setExpandedCast(c.hash)}>See more</button>
                       </div>
                       : c.text}
                 </div>

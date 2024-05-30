@@ -4,14 +4,24 @@ import { CastProps } from './LongCastExpand'
 import Loader from './Loader'
 
 const StandardCast = ({ data, loading }: CastProps) => {
+  const validWarpcastUri = (uri: string) => {
+    const split = uri.split("/")[0]
+    const valid = ["http:", "https:", "chain:", "farcaster:"]
+    if(valid.includes(split)) {
+      return true;
+    }
+    return false;
+  }
+
   const Embeds = ({ cast }: { cast: any }) => {
     if (cast.embeds && cast.embeds.length > 0) {
       return cast.embeds.map((e: any) => {
         return (
           <div className="w-full" key={e.url}>
             {
+              validWarpcastUri(e.url) &&
               e.url.includes(".png") || e.url.includes(".jpg") || e.url.includes(".jpeg") || e.url.includes(".gif") || e.url.includes(".svg") ?
-                <img src={e.url} /> :
+                <img src={e.url} /> : validWarpcastUri(e.url) &&
                 <a target="_blank" rel="noreferrer noopener" className="underline truncate block" href={e.url}>{e.url}</a>
             }
           </div>)
