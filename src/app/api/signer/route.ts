@@ -6,9 +6,7 @@ export const dynamic = 'force-dynamic'
 
 export async function GET(request: NextRequest) {
   try {
-    console.log(getRequestContext())
-    const jwt = getRequestContext().env.PINATA_JWT
-    console.log({jwt})
+    const jwt =process.env.PINATA_JWT
     const res = await fetch(
       `https://api.pinata.cloud/v3/farcaster/casts?channel=books`,
       {

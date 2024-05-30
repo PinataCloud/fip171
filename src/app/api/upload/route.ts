@@ -7,10 +7,9 @@ export const dynamic = 'force-dynamic'
 export async function POST(request: NextRequest) {
   try {
     //  TODO validate request from privy token here
-    const jwt = getRequestContext().env.PINATA_JWT
+    const jwt = process.env.PINATA_JWT
 
     const payload = await request.json()
-    console.log(payload)
 
     const body = {
       "pinataOptions":{"cidVersion":1},
