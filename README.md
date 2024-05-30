@@ -1,0 +1,1 @@
+This is a simple example app that shows how FIP171 can be implemented progressively and with backwards compatibility by clients. 
