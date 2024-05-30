@@ -21,10 +21,10 @@ const LongcastLink = ({ data }: CastProps) => {
           <div className="w-full" key={e.url}>
             {
               e.url && e.url.includes("fc+") ?
-                <a className="underline truncate block" href={parseUri(e.url)}>{e.url.split("fc+")[1]}</a> :
+                <a target="_blank" rel="noreferrer noopener" className="underline truncate block" href={parseUri(e.url)}>{e.url.split("fc+")[1]}</a> :
                 e.url.includes(".png") || e.url.includes(".jpg") || e.url.includes(".jpeg") || e.url.includes(".gif") || e.url.includes(".svg") ?
                   <img src={e.url} /> :
-                  <a className="underline truncate block" href={e.url}>{e.url}</a>
+                  <a target="_blank" rel="noreferrer noopener" className="underline truncate block" href={e.url}>{e.url}</a>
             }
           </div>)
       })

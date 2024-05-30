@@ -10,7 +10,7 @@ function classNames(...classes: any) {
 
 const Navbar = () => {
   const { ready, authenticated, login, user, logout } = usePrivy();
-  console.log(user)
+  
   return (
     <header className="shrink-0 bg-white">
       <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">

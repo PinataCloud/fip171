@@ -28,11 +28,12 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
 
   useEffect(() => {
     if (user && user.linkedAccounts) {
+      setNeedToSignIn(false)
       const fcLinked: any = user.linkedAccounts.find((account: any) => account?.type === 'farcaster')
       if (fcLinked) {
         const linked = fcLinked.signerPublicKey
         if (linked) {
-          setLinked(true)
+          setLinked(true)          
           //  check for previous cast text
           const text = localStorage.getItem("cast-text")
           if (text) {
@@ -75,21 +76,21 @@ export default function CastModal({ open, setOpen, fetchCasts }: CastModalProps)
         body: JSON.stringify(json)
       })
 
-      // const data: any = await res.json()
-      // const submitCastResponse = await client.submitCast(
-      //   {
-      //     text: prunedText,
-      //     embeds: [
-      //       {
-      //         url: `fc+ipfs://${data.IpfsHash}`
-      //       }
-      //     ],
-      //     parentUrl: 'https://warpcast.com/~/channel/fipworks'
-      //   },
-      //   fid,
-      //   privySigner,
-      // );
-      // console.log(submitCastResponse)
+      const data: any = await res.json()
+      const submitCastResponse = await client.submitCast(
+        {
+          text: prunedText,
+          embeds: [
+            {
+              url: `fc+ipfs://${data.IpfsHash}`
+            }
+          ],
+          parentUrl: 'https://warpcast.com/~/channel/fipworks'
+        },
+        fid,
+        privySigner,
+      );
+      console.log(submitCastResponse)
       setContent("")
       setOpen(false);
       fetchCasts()
